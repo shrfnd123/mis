@@ -96,83 +96,89 @@ class CustomerController extends Controller
 
         return view('customer\itempreview',compact('data'));
     }
-
+    public function AddToCart1(){
+     
+      
+        echo "hello";
+    }
     public function AddToCart(Request $request){
+        $data= $request->item_id;
+        return response()->json($data);
 
-        $data = DB::table('item_tbl')
-                ->select('*')
-                ->where('item_id',$request->item_id)
-                ->first();
+        // $data = DB::table('item_tbl')
+        //         ->select('*')
+        //         ->where('item_id',$request->item_id)
+        //         ->first();
 
-        if($data->quantity < $request->quantity){
-            return "wag tanga";
-        }
-        else{
-            if(!empty(session('order'))){
+        // if($data->quantity < $request->quantity){
+        //     return "wag tanga";
+        // }
+        // else{
+        //     if(!empty(session('order'))){
         
-            $flag1 = 0;
-            $count = count(session('order'));
-            $flag = 0;
+        //     $flag1 = 0;
+        //     $count = count(session('order'));
+        //     $flag = 0;
             
-            for($x=0; $x < $count; $x++){
+        //     for($x=0; $x < $count; $x++){
                         
-                if(session('order')[$x]['item_id'] == $request->item_id){
+        //         if(session('order')[$x]['item_id'] == $request->item_id){
             
-                    if($flag1 == 0){
-                        $products = session()->pull('order', []);
-                    }
+        //             if($flag1 == 0){
+        //                 $products = session()->pull('order', []);
+        //             }
 
-                    $products[$x]['quantity'] = $products[$x]['quantity'] + $request->quantity;
-                    $flag = 1;
-                }
-                $flag1 = 1;
+        //             $products[$x]['quantity'] = $products[$x]['quantity'] + $request->quantity;
+        //             $flag = 1;
+        //         }
+        //         $flag1 = 1;
                         
-            }
-            if($flag == 0){
-                if($data->sale == 1){
-                    $price = $data->price * $data->discount;
-                }
-                else{
-                    $price = $data->price;
-                }
-                $request->session()->push('order',[
-                            'item_id' => $request->item_id,
-                            'item_name' => $data->product_name,
-                            'description' => $data->description,
-                            'item_price' => $price,
-                            'stock' => $data->quantity,
-                            'image' => $data->image,
-                            'quantity' => $request->quantity
-                        ]);
-            }
-            else{
-                $products = array_values($products);
-                session()->put('order',$products);
-            }
+        //     }
+        //     if($flag == 0){
+        //         if($data->sale == 1){
+        //             $price = $data->price * $data->discount;
+        //         }
+        //         else{
+        //             $price = $data->price;
+        //         }
+        //         $request->session()->push('order',[
+        //                     'item_id' => $request->item_id,
+        //                     'item_name' => $data->product_name,
+        //                     'description' => $data->description,
+        //                     'item_price' => $price,
+        //                     'stock' => $data->quantity,
+        //                     'image' => $data->image,
+        //                     'quantity' => $request->quantity
+        //                 ]);
+        //     }
+        //     else{
+        //         $products = array_values($products);
+        //         session()->put('order',$products);
+        //     }
                      
             
-                }
-                else{
-                    if($data->sale == 1){
-                        $price = $data->price * $data->discount;
-                    }
-                    else{
-                        $price = $data->price;
-                    }
-                    $request->session()->push('order',[
-                            'item_id' => $request->item_id,
-                            'item_name' => $data->product_name,
-                            'description' => $data->description,
-                            'stock' => $data->quantity,
-                            'item_price' => $price,
-                            'image' => $data->image,
-                            'quantity' => $request->quantity
-                        ]);
-                }
+        //         }
+        //         else{
+        //             if($data->sale == 1){
+        //                 $price = $data->price * $data->discount;
+        //             }
+        //             else{
+        //                 $price = $data->price;
+        //             }
+        //             $request->session()->push('order',[
+        //                     'item_id' => $request->item_id,
+        //                     'item_name' => $data->product_name,
+        //                     'description' => $data->description,
+        //                     'stock' => $data->quantity,
+        //                     'item_price' => $price,
+        //                     'image' => $data->image,
+        //                     'quantity' => $request->quantity
+        //                 ]);
+        //         }
 
-            return "hindi tanga";
+        //     return "hindi tanga";
 
-        }
+        // }
 
 
 

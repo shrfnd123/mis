@@ -35,7 +35,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($data as $result)
+                                // @foreach($data as $result)
                                 
                                     <tr>
                                         <td>{{$result->product_name}}</td>

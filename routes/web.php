@@ -13,6 +13,7 @@
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 Route::get('/', function () {
    return "hello world";
 });
@@ -50,7 +51,8 @@ Route::get('/trailer', CustomerController::class. '@trailer')->name('trailer');
 Route::get('/atvutv', CustomerController::class. '@atvutv')->name('atvutv');
 Route::get('/lawngarden', CustomerController::class. '@lawngarden')->name('lawngarden');
 Route::get('/ItemPreview/{item_id}', CustomerController::class. '@ItemPreview')->name('ItemPreview');
-Route::get('/AddToCart', [CustomerController::class, '@AddToCart'])->name('AddToCart');
+Route::post('/AddToCart', [CustomerController::class, '@AddToCart'])->name('AddToCart');
+Route::post('/AddToCart1', [CustomerController::class, '@AddToCart1'])->name('AddToCart1');
 Route::get('/index', [CustomerController::class, 'index'])->name('index');
 Route::get('/test', 'AdminController@test')->name('test');
 Route::get('/CartPreview', CustomerController::class. '@CartPreview')->name('CartPreview');

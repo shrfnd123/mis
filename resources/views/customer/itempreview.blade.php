@@ -25,11 +25,9 @@
 	                   <i class="ion-ios-remove"></i>
 	                	</button>
 	            		</span>
-                    <input type="hidden" id="item_id" value="{{$data->item_id}}">
-                    <input type="hidden" id="item_qty" value="{{$data->quantity}}">
 	             	<input type="text" id="quantity" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
 	             	<span class="input-group-btn ml-2">
-	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+					 
 	                     <i class="ion-ios-add"></i>
 	                 </button>
 	             	</span>
@@ -41,7 +39,12 @@
           	</div>
           	<p>
 			  @if(session('logged') == true)
-			  <a class="btn btn-black py-3 px-5 mr-2 " id="cartPreview">Add to Cart</a></p>
+			  <form>
+						@csrf
+					
+                    <input type="hidden" id="item_id" value="{{$data->item_id}}">
+					<button type="submit"  class="btn btn-success addToCart">Save</button>
+                      </p></form>
 			  @else
 			  <a href="{{route('LoginCustomer')}}" class="btn btn-black py-3 px-5 mr-2 ">Login</a></p>
 			  @endif

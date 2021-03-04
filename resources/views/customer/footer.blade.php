@@ -95,163 +95,30 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="{{asset('ecommerce/js/google-map.js')}}"></script>
   <script src="{{asset('ecommerce/js/main.js')}}"></script>
+  <script src="{{asset('admin/plugins/jquery/ajax.js')}}"></script>
   
-  <script>
-		$(document).ready(function(){
-
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
-
-		          
-		            // Increment
-		        
-		    });
-
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-
-    $('#cartPreview').click(function(e){
-      
-      var item_id = $('#item_id').val();
-      var quantity = $('#quantity').val();
-      var stock = $('#item_qty').val();
+  <script type="text/javascript">
+$(".addToCart").click(function(e){
   
-      if(quantity < 0){
-        alert("Invalid quantity" + quantity);
-        location.reload();
-      }
-      else{
-        $.ajax({
-        url: Url.Action("AddToCart"),
-        type: 'POST',
-        data: {
-          item_id: item_id,
-          quantity: quantity
+  let item_id = $('#item_id').val();
+  let _token   = $('meta[name="csrf-token"]').attr('content');
+ 
+  $.ajax({
+        
+        url: "{{route('AddToCart1')}}",
+        type:"POST",
+        data:{
+          item_id:item_id,
+          _token: _token
         },
-        dataType: 'HTML',
-        success: function(response){
-          if(response == "wag tanga"){
-            alert("Quantity should not be greater than the available stock");
-            window.location.href = '{{route("index")}}';
-
-          }
-          else{
-            alert("Item successfully added!");
-            window.location.href = '{{route("index")}}';
-          }
-          
-        }
-      })
-      }
-      
-    });
-
-    $('.removecart').click(function(e){
-      
-      e.preventDefault();
-      var item_id = $(this).attr("id");
-
-      var confirmation = confirm("Are you sure you want to remove this item?");
-
-      if(confirmation == true){
-        $.ajax({
-          url: '{{route("RemoveItem")}}',
-          type: 'GET',
-          data: {
-            item_id: item_id
-          },
-          dataType: 'HTML',
-          success: function(response){
-            alert("Item successfully removed");
-            location.reload();
-          }
-        })
-      }
-      
-
-      
-    });
-
-    $(".qtyitm").change(function(e){
-
-      var data = $(this).attr("id");
-      data = data.split('-');
-      var item_id = data[0];
-      var quantity = $('.qtyitm').val();
-      var stock = data[1];
-
-      
-      if(quantity <= 0){
-        alert("invalid quantity");
-        location.reload();
-      }
-      else{
-        $.ajax({
-          url: '{{route("EditItem")}}',
-          type: 'GET',
-          data: {
-            item_id: item_id,
-            quantity: quantity
-          },
-          dataType: 'HTML',
-          success: function(response){
-              
-              if(response == "tanga ka"){
-                alert("Quantity should not be greater than the available stock");
-                location.reload();
-              }
-              else{
-                alert("Item successfully edited");
-                location.reload();
-              }
-              
-          }
-        })
-      }
-      
-      
-      
-    });
-
-    $("#checkout").click(function(e){
-
-      var confirmation = confirm("Are you sure you want to checkout?");
-
-      if(confirmation == true){
-        alert("Successfully Checked Out");
-        window.location.href = '{{route("CheckOut")}}';
-      }
-
-    });
-
-    $(".edtprof").click(function(e){
-      alert("Edit Successful");
-    })
-
-    
-	</script>
+        success:function(data){
+          console.log(data);
+       
+        },
+       
+       });
+})
+</script>
     
 </body>
 </html>
