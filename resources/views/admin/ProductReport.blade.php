@@ -4,20 +4,20 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Product Report</h1>
-          </div>
-          
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Product Report</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Product Report</h1>
+                </div>
+
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Product Report</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
     </section>
 
     <section class="content">
@@ -35,18 +35,18 @@
                                         <th>Category</th>
                                         <th>Description</th>
                                         <th>Price</th>
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($pplr as $popular)
-                                    <tr>
-                                        <td>{{$popular->product_name}}</td>
-                                        <td>{{$popular->category}}</td>
-                                        <td>{{$popular->description}}</td>
-                                        <td>{{$popular->price}}</td>
-                                    </tr>
-                                @endforeach
+                                    @foreach ($pplr as $popular)
+                                        <tr>
+                                            <td>{{ $popular->product_name }}</td>
+                                            <td>{{ $popular->category }}</td>
+                                            <td>{{ $popular->description }}</td>
+                                            <td>{{ $popular->price }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -66,20 +66,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($ntpplr as $notpopular)
-                                    <tr>
-                                        <td>{{$notpopular->product_name}}</td>
-                                        <td>{{$notpopular->category}}</td>
-                                        <td>{{$notpopular->description}}</td>
-                                        <td>{{$notpopular->price}}</td>
-                                        <td align="center">
-                                            <button class="btn btn-primary discountbutton" id="{{$notpopular->item_id}}" data-toggle="modal" data-target="#SetDiscount">Set Discount</button>
-                                            @if($notpopular->sale == 1)
-                                            <button class="btn btn-danger removediscount" id="{{$notpopular->item_id}}">Remove Discount</button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                    @foreach ($ntpplr as $notpopular)
+                                        <tr>
+                                            <td>{{ $notpopular->product_name }}</td>
+                                            <td>{{ $notpopular->category }}</td>
+                                            <td>{{ $notpopular->description }}</td>
+                                            <td>{{ $notpopular->price }}</td>
+                                            <td align="center">
+                                                <button class="btn btn-primary discountbutton"
+                                                    id="{{ $notpopular->item_id }}" data-toggle="modal"
+                                                    data-target="#SetDiscount">Set Discount</button>
+                                                @if ($notpopular->sale == 1)
+                                                    <button class="btn btn-danger removediscount"
+                                                        id="{{ $notpopular->item_id }}">Remove Discount</button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -105,18 +108,18 @@
                                             <input type="radio" name="discount" value="0.5"> 50%
                                             <input type="hidden" id="item_id">
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-primary" id="saveDiscountItem">Save</button>
                                 </div>
-                                
+
                             </div>
-          <!-- /.modal-content -->
+                            <!-- /.modal-content -->
                         </div>
-        <!-- /.modal-dialog -->
+                        <!-- /.modal-dialog -->
                     </div>
                 </div>
             </div>

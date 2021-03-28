@@ -8,6 +8,7 @@ use DB;
 use App\Models\Item_Tbl;
 use App\Models\Order_Tbl;
 use App\Models\Sales_Tbl;
+use App\Models\Tbl_Users;
 use Auth;
 use Redirect;
 date_default_timezone_set("Asia/Manila");
@@ -53,6 +54,81 @@ class AdminController extends Controller
         }
     }
 
+    public function UpdateUserView(){
+        
+        $data = DB::table('tbl_users')
+                ->select('*')
+                ->where('user_type',1)
+                ->get();
+
+        return view('admin\edit_user',compact('data'));
+    }
+
+    public function getUserbyID(){
+
+        $data = DB::table('tbl_users')
+                ->select('*')
+                ->where('user_id',session('user_id'))
+                ->first();
+        
+    }
+
+    public function EditUserAdmin(Request $request){
+
+        $data = ([
+            'username' => $request['product_name'],
+            'name' => $request['name'],
+            'street_address' => $request['street_address'],
+            'city' => $request['city'],
+            'zip_code' => $request['zip_code'],
+            'contact_num' => $request['contact_num'],
+            'email' => $request['email']
+            // 'user_id' => $request['user_id']
+        ]);
+        
+        Tbl_Users::EditUserA($data);
+    }
+
+    public function ChangePassView(){
+        $data = DB::table('tbl_users')
+                ->select('*')
+                ->where('user_type',1)
+                ->get();
+
+        return view('admin\changepass', compact('data'));
+    }
+
+    public function ChangingP(Request $request){
+        $data = $request['user_id'];
+        dd($data);
+        // return view('admin\changepassAdmin');
+    }
+
+    public function ChangePassA(Request $request){
+
+        $data = DB::table('tbl_users')
+                ->select('*')
+                ->where('user_id',1)
+                ->get();
+        
+        
+        foreach($data as $result){
+            if($request['newpass'] != $request['newpassconfirm']){
+                
+                $data['message'] = "New password and confirm password did not match";
+                return view('admin\ChangingP',  ['message'=> $data['message']]);
+            }
+            else{
+                $data = DB::update('update tbl_users set password = ? where user_id = ?',[$FirstName,$users_id]);
+        
+                // Tbl_Users::ChangePAdmin($request['newpass'],where('user_type', '=',  'user_id'));
+                // $data['message'] = "Password Successfully Changed!";
+                return view('admin\changepass',  ['message'=> $data['message']], compact('data'));
+            }
+        }
+        
+    }
+
     public function adminDashboard(){
 
         return view('admin\dashboard');
@@ -91,12 +167,13 @@ class AdminController extends Controller
                 ->get();
 
         return view('admin\AddStock',compact('data'));
-
     }
 
     public function AddStock(Request $request){
+        $stock = $request['stock'];
+        // return $stock;
 
-        Item_Tbl::AddStock($request->item_id,$request->stock);
+        Item_Tbl::AddStock($request->item_id,$stock);
     }
 
     public function UpdateItemView(){
@@ -169,7 +246,8 @@ class AdminController extends Controller
         $data = DB::table('sales_tbl')
                 ->join('order_tbl','sales_tbl.order_id','=','order_tbl.order_id')
                 ->join('item_tbl','order_tbl.item_id','=','item_tbl.item_id')
-                ->select('sales_tbl.*','item_tbl.product_name')
+                ->join('tbl_users','order_tbl.user_id','=','tbl_users.user_id')
+                ->select('sales_tbl.*','item_tbl.product_name','order_tbl.order_quantity','tbl_users.name')
                 ->get();
 
         return view('admin\Sales',compact('data'));
@@ -245,8 +323,6 @@ class AdminController extends Controller
             $monthlysales[$months[$x]] = $sales;
 
         }
-
-
 
         $salesmonth = $monthlysales;
 

@@ -49,11 +49,27 @@ class Tbl_Users extends Model
         DB::table('tbl_users')
             ->where('user_id',$data['user_id'])
             ->update([
-                'name' => $data['name'],
                 'username' => $data['username'],
+                'name' => $data['name'],
                 'street_address' => $data['street'],
                 'city' => $data['city'],
                 'zip_code' => $data['zipcode'],
+                'contact_num' => $data['contact_num'],
+                'email' => $data['email']
+            ]);
+
+    }
+
+    public static function EditUserA($data){
+
+        DB::table('tbl_users')
+            ->where('user_id')
+            ->update([
+                'username' => $data['username'],
+                'name' => $data['name'],
+                'street_address' => $data['street_address'],
+                'city' => $data['city'],
+                'zip_code' => $data['zip_code'],
                 'contact_num' => $data['contact_num'],
                 'email' => $data['email']
             ]);
@@ -67,4 +83,13 @@ class Tbl_Users extends Model
                 'password' => $password
             ]);
     }
+
+    // public static function ChangePAdmin($password,$user_id){
+    //     DB::table('tbl_users')
+    //         ->where('user_id',$user_id)
+    //         ->update([
+    //             'password' => $password
+    //         ]);
+    // }
+    
 }

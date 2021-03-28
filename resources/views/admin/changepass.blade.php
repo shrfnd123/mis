@@ -7,13 +7,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Sales</h1>
+                    <h1>Update Password</h1>
                 </div>
 
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Sales</li>
+                        <li class="breadcrumb-item active">Update Password</li>
                     </ol>
                 </div>
             </div>
@@ -29,24 +29,26 @@
                             <table id="stocktable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Customer Name</th>
-                                        <th>Item Name</th>
-                                        <th>Quantity</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Password</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $result)
-
                                         <tr>
+                                            <td>{{ $result->username }}</td>
                                             <td>{{ $result->name }}</td>
-                                            <td>{{ $result->product_name }}</td>
-                                            <td>{{ $result->order_quantity }}</td>
-                                            <td>{{ $result->amount }}</td>
-                                            <td>{{ date('F d, Y', strtotime($result->date)) }}</td>
-                                        </tr>
+                                            <td>{{ $result->password }}</td>
+                                            <td>
 
+                                                <a onclick="edit_user(this)" href="javascript:;" class="btn btn-info"
+                                                    aria-hidden="true">Update</a>
+                                                {{-- <a class="btn btn-info " id="{{ $result->user_id }}"
+                                                    href="{{ route('ChangingP') }}">Update</a> --}}
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

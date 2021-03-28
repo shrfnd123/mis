@@ -4,20 +4,20 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Add Stock</h1>
-          </div>
-          
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Add Stock</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Add Stock</h1>
+                </div>
+
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Add Stock</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
     </section>
 
     <section class="content">
@@ -38,16 +38,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($data as $result)
-                                    <tr>
-                                        <td>{{$result->product_name}}</td>
-                                        <td>{{$result->category}}</td>
-                                        <td>{{$result->description}}</td>
-                                        <td>{{$result->price}}</td>
-                                        <td>{{$result->quantity}}</td>
-                                        <td><button class="btn btn-warning addstock" id="{{$result->item_id}}" data-toggle="modal" data-target="#InputStock" >Add Stock</button></td>
-                                    </tr>
-                                @endforeach
+                                    @foreach ($data as $result)
+                                        <tr>
+                                            <td>{{ $result->product_name }}</td>
+                                            <td>{{ $result->category }}</td>
+                                            <td>{{ $result->description }}</td>
+                                            <td>{{ $result->price }}</td>
+                                            <td>{{ $result->quantity }}</td>
+                                            <td><button class="btn btn-warning addstock" id="{{ $result->item_id }}"
+                                                    data-toggle="modal" data-target="#InputStock">Add Stock</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -62,21 +64,24 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row">
-                                        <label class="col-sm-2">Stock:</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" id="stock" style="margin-left:10px;">
+                                    <form>
+                                        @csrf
+                                        <div class="row">
+                                            <label class="col-sm-2">Stock:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="stock" style="margin-left:10px;">
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
                                 <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-primary" id="savestock">Save</button>
+                                    </form>
                                 </div>
                             </div>
-          <!-- /.modal-content -->
+                            <!-- /.modal-content -->
                         </div>
-        <!-- /.modal-dialog -->
+                        <!-- /.modal-dialog -->
                     </div>
                 </div>
             </div>

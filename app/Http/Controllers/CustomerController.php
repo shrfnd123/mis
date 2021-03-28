@@ -96,99 +96,95 @@ class CustomerController extends Controller
 
         return view('customer\itempreview',compact('data'));
     }
-    public function AddToCart1(){
+    public function AddToCart1(Request $request){
      
-      
-        echo "hello";
+        return "hello";
     }
     public function AddToCart(Request $request){
-        $data= $request->item_id;
-        return response()->json($data);
+        // return "Hi";
+        $item_id = $request['item_id'];
+        $quantity = $request['quantity'];
+        // return $quantity;
+        // return $data;
+        // return response()->json($data);
 
-        // $data = DB::table('item_tbl')
-        //         ->select('*')
-        //         ->where('item_id',$request->item_id)
-        //         ->first();
-
-        // if($data->quantity < $request->quantity){
-        //     return "wag tanga";
-        // }
-        // else{
-        //     if(!empty(session('order'))){
         
-        //     $flag1 = 0;
-        //     $count = count(session('order'));
-        //     $flag = 0;
+        $data = DB::table('item_tbl')
+                ->select('*')
+                ->where('item_id',$item_id)
+                ->first(); 
+                
+        if($data->quantity < $quantity){
+            return "sorry";
+        }
+        else{
+            if(!empty(session('order'))){ 
+                $flag1 = 0;
+                $count = count(session('order'));
+                $flag = 0;
+                for($x=0; $x < $count; $x++){
+                    
+                    if(session('order')[$x]['item_id'] == $item_id){
+                
+                        if($flag1 == 0){
+                            $products = session()->pull('order', []);
+                        }
+        
+                        $products[$x]['quantity'] = $products[$x]['quantity'] + $request->quantity;
+                        $flag = 1;
+                    }
+                    $flag1 = 1;          
+                }
+                if($flag == 0){
+                    if($data->sale == 1){
+                        $price = $data->price * $data->discount;
+                    }
+                    else{
+                        $price = $data->price;
+                    }
+                    $request->session()->push('order',[
+                                'item_id' => $request->item_id,
+                                'item_name' => $data->product_name,
+                                'description' => $data->description,
+                                'item_price' => $price,
+                                'stock' => $data->quantity,
+                                'image' => $data->image,
+                                'quantity' => $request->quantity
+                            ]);
+                }
+                else{
+                    $products = array_values($products);
+                    session()->put('order',$products);
+                }
             
-        //     for($x=0; $x < $count; $x++){
-                        
-        //         if(session('order')[$x]['item_id'] == $request->item_id){
-            
-        //             if($flag1 == 0){
-        //                 $products = session()->pull('order', []);
-        //             }
-
-        //             $products[$x]['quantity'] = $products[$x]['quantity'] + $request->quantity;
-        //             $flag = 1;
-        //         }
-        //         $flag1 = 1;
-                        
-        //     }
-        //     if($flag == 0){
-        //         if($data->sale == 1){
-        //             $price = $data->price * $data->discount;
-        //         }
-        //         else{
-        //             $price = $data->price;
-        //         }
-        //         $request->session()->push('order',[
-        //                     'item_id' => $request->item_id,
-        //                     'item_name' => $data->product_name,
-        //                     'description' => $data->description,
-        //                     'item_price' => $price,
-        //                     'stock' => $data->quantity,
-        //                     'image' => $data->image,
-        //                     'quantity' => $request->quantity
-        //                 ]);
-        //     }
-        //     else{
-        //         $products = array_values($products);
-        //         session()->put('order',$products);
-        //     }
-                     
-            
-        //         }
-        //         else{
-        //             if($data->sale == 1){
-        //                 $price = $data->price * $data->discount;
-        //             }
-        //             else{
-        //                 $price = $data->price;
-        //             }
-        //             $request->session()->push('order',[
-        //                     'item_id' => $request->item_id,
-        //                     'item_name' => $data->product_name,
-        //                     'description' => $data->description,
-        //                     'stock' => $data->quantity,
-        //                     'item_price' => $price,
-        //                     'image' => $data->image,
-        //                     'quantity' => $request->quantity
-        //                 ]);
-        //         }
-
-        //     return "hindi tanga";
-
-        // }
-
+            }
+            else{ 
+                // return "hi";
+                if($data->sale == 1){
+                    $price = $data->price * $data->discount;
+                    // return "hello";
+                }
+                else{
+                    // return "hi";
+                    $price = $data->price;
+                }
+                $request->session()->push('order',[
+                        'item_id' => $request->item_id,
+                        'item_name' => $data->product_name,
+                        'description' => $data->description,
+                        'stock' => $data->quantity,
+                        'item_price' => $price,
+                        'image' => $data->image,
+                        'quantity' => $request->quantity
+                    ]);
+            }
+          
+        }
 
 
     }
 
-    public function test(){
-
-        
-        // dd($monthlysales);
-    }
+    
 
     public function CartPreview(){
 
@@ -225,6 +221,10 @@ class CustomerController extends Controller
         return view('home');
     }
 
+    public function Signup(){
+        return view('customer\signup');
+    }
+
     public function Register(Request $request){
 
         if($request['password'] != $request['confirmpass']){
@@ -246,6 +246,7 @@ class CustomerController extends Controller
         $tbl_users = Tbl_Users::select('*')
                         ->where('username',$username)
                         ->where('password',$password)
+                        ->where('user_type',1)
                         ->first();
 
         if($tbl_users == false || $tbl_users->username != $username || $tbl_users->password != $password ){
@@ -324,14 +325,13 @@ class CustomerController extends Controller
         public function EditItem(Request $request){
 
             
-
             $data = DB::table('item_tbl')
                     ->select('*')
                     ->where('item_id',$request->item_id)
                     ->first();
 
             if($data->quantity < $request->quantity){
-                return "tanga ka";
+                return "Cannot proceed";
             }
             else{
                 $products=session()->pull('order', []);
@@ -342,11 +342,30 @@ class CustomerController extends Controller
                 }
                 session()->put('order',$products);
 
-                return "hindi tanga";
+                return "Succesfully added";
             }
         
             
             
+        }
+
+        public function historyView()
+        {
+            // $data1 = DB::table('item_tbl')
+            //     ->select('*')
+            //     ->where('item_id')
+            //     ->sum('price');
+                
+
+            $data =  DB::table('order_tbl')
+                ->join('sales_tbl','sales_tbl.order_id','=','order_tbl.order_id')
+                ->join('item_tbl','item_tbl.item_id','=','order_tbl.item_id')
+                ->select('*')
+                ->where('user_id',session('user_id'))
+                ->groupBy('product_name')
+                ->get();
+
+        return view('customer\history',compact('data'));
         }
 
         public function CheckOut(){
